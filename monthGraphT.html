@@ -1,0 +1,212 @@
+<html>
+<head>
+     <link rel="stylesheet" href="css/style.css">
+    
+  <style>html{font-family:Verdana;}
+
+
+
+  </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+
+
+<script type="text/javascript">
+
+
+
+var ndp =  [];
+var Libral = [];
+var Conservative =   [];
+var Bloc =  [];
+var Communist = [];
+var Progressive =   [];
+var Green =  [];
+var Libertarian = [];
+var Marxist =   [];
+var Christian =   [];
+
+ var partyName =["ndp","Libral","Bloc","Christian","Communist","Progressive","Green","Libertarian","Marxist","Conservative"];
+ var monthName =["January ","February ","march","april","may","june","july","august","september","october","november","december"];
+var data,m=0;
+var d = new Date();
+var currentMonth = d.getMonth()+1;
+// $(document).ready(function () {
+
+function init(){
+
+for (m=0;m<currentMonth;m++) {
+ 
+      for(var i in partyName) {
+         var str;
+           $.ajax({
+           dataType: "json",
+           url: 'api.php/?party='+partyName[i]+'&month='+monthName[m]+'&email=',
+           data: data,
+           async: false,
+           success: function (data) {
+              show(partyName[i],data[0].party,m);
+
+           }
+         });
+        
+    
+      }
+if(m==currentMonth-1){
+  $('.lds-css').css("display","none");
+     initGraph();
+
+}
+}
+
+
+
+
+
+}
+
+function show(party,votes,n){
+
+  switch (party) {
+      case 'ndp':    ndp[n]=votes;
+          break;
+      case 'Libral':Libral[n]=votes;
+          break;
+      case 'Bloc':Bloc[n]=votes;
+          break;
+      case 'Christian':Christian[n]=votes;
+          break;
+      case 'Communist':Communist[n]=votes;
+          break;
+      case 'Progressive':Progressive[n]=votes;
+          break;
+      case 'Green':Green[n]=votes;
+        break;
+      case 'Libertarian':Libertarian[n]=votes;
+          break;
+      case 'Marxist':Marxist[n]=votes;
+          break;
+      case 'Conservative':Conservative[n]=votes;
+      default:
+      break;
+  }
+
+
+}
+
+
+
+
+function initGraph() {
+  var ctx = document.getElementById("canvasDiv");
+  var canvas = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: monthName,
+      datasets: [
+        {
+          data: ndp,
+          label: "ndp",
+          borderColor: "#FF0066",
+          fill: false
+        },
+        {
+          data: Libral,
+          label: "Libral",
+          borderColor: "#9933FF",
+          fill: false
+        },
+        {
+          data: Bloc,
+          label: "Bloc",
+          borderColor: "#3cb44b",
+          fill: false
+        },
+        {
+          data: Christian,
+          label: "Christian",
+          borderColor: "#aaffc3",
+          fill: false
+        },
+        {
+          data: Communist,
+          label: "Communist",
+          borderColor: "#f58231",
+          fill: false
+        }
+        ,
+        {
+          data: Progressive,
+          label: "Progressive",
+          borderColor: "#008080",
+          fill: false
+        }
+        ,
+        {
+          data: Green,
+          label: "Green",
+          borderColor: "#c45850",
+          fill: false
+        }
+        ,
+        {
+          data: Libertarian,
+          label: "Libertarian",
+          borderColor: "#800000",
+          fill: false
+        }
+        ,
+        {
+          data: Marxist,
+          label: "Marxist",
+          borderColor: "#808000",
+          fill: false
+        }
+        ,
+        {
+          data: Conservative,
+          label: "Conservative",
+          borderColor: "#000",
+          fill: false
+        }
+      ]
+    }
+  });
+}
+
+
+
+</script>
+</head>
+
+<body onLoad="init()">
+
+
+<div align="center">
+  <h3>Number of Votes Per Month</h3>
+<div class="lds-css ng-scope" style="padding-top:3em">
+<div class="lds-gear" style="100%;height:100%">
+  <div><div></div><div></div><div></div><div></div><div></div></div>
+</div>
+<div class="lds-gear lds-gear2" style="100%;height:100%;top: -7em;   right: -9em;">
+  <div  style="top: -7em;   right: -9em;">
+      <div></div><div></div><div></div><div></div><div></div>
+    </div>
+</div>
+<p>processing...</p>
+</div>
+
+
+  <canvas id="canvasDiv" height="350" width="650"></canvas>
+
+
+
+
+
+</div>
+</body>
+</html>
